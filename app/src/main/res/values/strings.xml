@@ -1,0 +1,4 @@
+<resources>
+    <string name="app_name">RestReviewer</string>
+    <string name="add_rest">Add Restaurant</string>
+</resources>
