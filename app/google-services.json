@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "749175848579",
+    "firebase_url": "https://collegeandroidassigment.firebaseio.com",
+    "project_id": "collegeandroidassigment",
+    "storage_bucket": "collegeandroidassigment.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:749175848579:android:319df749346b753c",
+        "android_client_info": {
+          "package_name": "com.restreviewer.restreviewer"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "749175848579-8ohd2pqu2ga55608j4gkt8d8hpqoq5d7.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.restreviewer.restreviewer",
+            "certificate_hash": "f0285ec819514bb54def075825622ad260a512ef"
+          }
+        },
+        {
+          "client_id": "749175848579-9eo63t28k0hnjahhkg9l7vmhg53erdhu.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAGu6XN2YE3YQqsW_QZFYWjVaMTf-JyG4c"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "749175848579-9eo63t28k0hnjahhkg9l7vmhg53erdhu.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
