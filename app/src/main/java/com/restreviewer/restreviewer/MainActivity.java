@@ -11,7 +11,9 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
@@ -27,8 +29,7 @@ import java.util.HashMap;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
-
-    List<Restaurant> data;
+    List<Restaurant> localRestaurants = new ArrayList<Restaurant>();
     ResurantListAdapter restAdapter;
 
     @Override
@@ -43,11 +44,13 @@ public class MainActivity extends AppCompatActivity {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
-                for (DataSnapshot postSnapshot: dataSnapshot.getChildren()) {
-                    Restaurant post = postSnapshot.getValue(Restaurant.class);
-                    Log.d("asdf", "onDataChange: " +post.toString());
-
+                for (DataSnapshot restSnapshot: dataSnapshot.getChildren()) {
+                    Restaurant rest = restSnapshot.getValue(Restaurant.class);
+                    localRestaurants.add(rest);
                 }
+                ListView restList = (ListView)findViewById(R.id.resturant_main_list);
+                restAdapter = new ResurantListAdapter();
+                restList.setAdapter(restAdapter);
             }
 
             @Override
@@ -58,12 +61,6 @@ public class MainActivity extends AppCompatActivity {
         });
 
         // TODO: Get All Restaurant
-        data = new ArrayList<Restaurant>();
-        data.add(new Restaurant());
-
-        ListView restList = (ListView)findViewById(R.id.resturant_main_list);
-        restAdapter = new ResurantListAdapter();
-        restList.setAdapter(restAdapter);
 
         // TODO: click on rest event
 
@@ -83,12 +80,12 @@ public class MainActivity extends AppCompatActivity {
 
         @Override
         public int getCount() {
-            return data.size();
+            return localRestaurants.size();
         }
 
         @Override
         public Object getItem(int position) {
-            return data.get(position);
+            return localRestaurants.get(position);
         }
 
         @Override
@@ -102,6 +99,19 @@ public class MainActivity extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 convertView = inflater.inflate(R.layout.restaurant_list_item,null);
             }
+
+            ImageView image = (ImageView) convertView.findViewById(R.id.restaurant_image);
+            TextView name = (TextView) convertView.findViewById(R.id.restName);
+            TextView type = (TextView) convertView.findViewById(R.id.restType);
+            TextView phone = (TextView) convertView.findViewById(R.id.restPhone);
+
+            convertView.setTag(position);
+
+            Restaurant currRest = localRestaurants.get(position);
+            name.setText(currRest.Name);
+            type.setText(currRest.FoodType);
+            phone.setText(currRest.Telephone);
+            // TODO: set the restaurant image
 
             return convertView;
         }
