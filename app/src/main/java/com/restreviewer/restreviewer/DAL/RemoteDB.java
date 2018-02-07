@@ -1,9 +1,19 @@
 package com.restreviewer.restreviewer.DAL;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import android.content.Context;
+import android.util.Log;
+
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by paz on 07/02/2018.
@@ -17,7 +27,7 @@ public class RemoteDB {
     }
 
     public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
-        Firebase ref = new Firebase("https://restreviewer-d0351.firebaseio.com/restaurants");
+    /*    Firebase ref = new Firebase("https://restreviewer-d0351.firebaseio.com/restaurants");
 
         final Firebase newRestRef = ref.push();
         newRestRef.setValue(restaurant, new Firebase.CompletionListener() {
@@ -30,20 +40,32 @@ public class RemoteDB {
                     listener.done(newRestRef.getKey());
                 }
             }
-        });
+        });*/
     }
 
-    /*public void addRestaurant(Restaurant restaurant){
+    public void getRestaurants(final Model.GetRestaurantsListener listener) {
         FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("restaurants").child(restaurant.getId().toString());
-        // TODO: understand how to save
-        //Map<String, Object> value = new HashMap<>();
-        //value.put("Id",restaurant.getId().toString());
-        //value.put("name",restaurant.getName());
-        //value.put("phone",restaurant.getPhone());
-        //myRef.setValue(value);
+        DatabaseReference myRef = database.getReference("Restaurants");
 
-        myRef.setValue(restaurant);
-    }*/
+        final List<Restaurant> localRestaurants = new ArrayList<Restaurant>();
 
+        myRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                for (DataSnapshot restSnapshot: dataSnapshot.getChildren()) {
+                    Restaurant rest = restSnapshot.getValue(Restaurant.class);
+                    localRestaurants.add(rest);
+                }
+
+                listener.done(localRestaurants);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("ThisISTag", "Failed to read value.", error.toException());
+            }
+        });
+    }
 }

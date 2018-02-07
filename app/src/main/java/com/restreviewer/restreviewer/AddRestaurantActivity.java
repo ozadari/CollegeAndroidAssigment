@@ -20,8 +20,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         Model.instance().addRestaurant(newRest, new Model.AddRestaurantListener() {
             @Override
             public void done(String key) {
-                System.out.println("comment successfully saved");
-                /* Save image
+                /*System.out.println("comment successfully saved");
+                 Save image
                 Model.instance().saveImage(key,imageBitmap, new OnSuccessListener<String>(){
                     @Override
                     public void onSuccess(String message) {
