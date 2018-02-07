@@ -33,8 +33,8 @@ public class Model {
         void done(List<Restaurant> stList);
     }
 
-    public void addRestaurant(Restaurant newRest, AddRestaurantListener listener) {
-        remote.addRestaurant(newRest, listener);
+    public void addRestaurant(Restaurant newRest) {
+        remote.addRestaurant(newRest);
     }
 
     public void getRestaurants(GetRestaurantsListener listener) {

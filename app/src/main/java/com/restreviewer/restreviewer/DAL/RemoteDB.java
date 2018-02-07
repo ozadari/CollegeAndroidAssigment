@@ -21,38 +21,23 @@ import java.util.List;
  */
 
 public class RemoteDB {
+    FirebaseDatabase database = FirebaseDatabase.getInstance();
+    DatabaseReference myRef = database.getReference("Restaurants");
+    final List<Restaurant> localRestaurants = new ArrayList<Restaurant>();
 
     public RemoteDB(Context context){
-        Firebase.setAndroidContext(context);
     }
 
-    public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
-    /*    Firebase ref = new Firebase("https://restreviewer-d0351.firebaseio.com/restaurants");
-
-        final Firebase newRestRef = ref.push();
-        newRestRef.setValue(restaurant, new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                    listener.done(newRestRef.getKey());
-                }
-            }
-        });*/
+    public void addRestaurant(Restaurant restaurant) {
+        myRef.push().setValue(restaurant);
     }
 
     public void getRestaurants(final Model.GetRestaurantsListener listener) {
-        FirebaseDatabase database = FirebaseDatabase.getInstance();
-        DatabaseReference myRef = database.getReference("Restaurants");
-
-        final List<Restaurant> localRestaurants = new ArrayList<Restaurant>();
-
         myRef.addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
+                localRestaurants.clear();
                 for (DataSnapshot restSnapshot: dataSnapshot.getChildren()) {
                     Restaurant rest = restSnapshot.getValue(Restaurant.class);
                     localRestaurants.add(rest);
