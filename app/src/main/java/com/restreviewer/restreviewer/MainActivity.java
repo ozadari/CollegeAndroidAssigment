@@ -6,17 +6,17 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.BaseAdapter;
 import android.widget.Button;
 import android.widget.ListView;
-import android.widget.Toast;
+import android.widget.ImageView;
 
 import com.restreviewer.restreviewer.Models.Restaurant;
 
 import java.util.ArrayList;
 import java.util.List;
+import android.widget.TextView;
+
 
 public class MainActivity extends AppCompatActivity {
 
@@ -28,7 +28,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Get All Restaurant
+        // TODO: Get All Restaurant from firebase
         data = new ArrayList<Restaurant>();
         data.add(new Restaurant());
 
@@ -40,7 +40,6 @@ public class MainActivity extends AppCompatActivity {
 
         // Add Restaurant button
         Button addRest = (Button) findViewById(R.id.btnAddRest);
-
         addRest.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -73,6 +72,19 @@ public class MainActivity extends AppCompatActivity {
                 LayoutInflater inflater = getLayoutInflater();
                 convertView = inflater.inflate(R.layout.restaurant_list_item,null);
             }
+
+            ImageView image = (ImageView) convertView.findViewById(R.id.restaurant_image);
+            TextView name = (TextView) convertView.findViewById(R.id.restName);
+            TextView type = (TextView) convertView.findViewById(R.id.restType);
+            TextView phone = (TextView) convertView.findViewById(R.id.restPhone);
+
+            convertView.setTag(position);
+
+            Restaurant currRest = data.get(position);
+            name.setText(currRest.getName());
+            type.setText(currRest.getType());
+            phone.setText(currRest.getPhone());
+            // TODO: set the restaurant image
 
             return convertView;
         }
