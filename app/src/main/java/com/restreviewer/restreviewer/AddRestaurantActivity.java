@@ -37,7 +37,13 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 newRest.Telephone = phoneNumber.getText().toString();
                 newRest.FoodType = foodType.getSelectedItem().toString();
 
-                Model.instance().addRestaurant(newRest);
+                Model.instance().addRestaurant(newRest, new Model.AddRestaurantListener(){
+                    @Override
+                    public void done(String key) {
+                        System.out.println("restaurant successfully saved");
+
+                    }
+                });
             }
         });
     }

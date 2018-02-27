@@ -7,6 +7,7 @@ import java.util.List;
  */
 
 public class Restaurant {
+    public String Id;
     public String Address;
     public Boolean Deliveries;
     public String FoodType;

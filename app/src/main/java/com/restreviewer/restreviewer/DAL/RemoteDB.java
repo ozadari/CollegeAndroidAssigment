@@ -28,8 +28,19 @@ public class RemoteDB {
     public RemoteDB(Context context){
     }
 
-    public void addRestaurant(Restaurant restaurant) {
-        myRef.push().setValue(restaurant);
+    public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
+        final DatabaseReference newRestaurantRef = myRef.push();
+        newRestaurantRef.setValue(restaurant, new Firebase.CompletionListener(){
+            @Override
+            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+                if (firebaseError != null) {
+                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+                } else {
+                    System.out.println("Data saved successfully.");
+                    listener.done(newRestaurantRef.getKey());
+                }
+            }
+        });
     }
 
     public void getRestaurants(final Model.GetRestaurantsListener listener) {
@@ -40,6 +51,8 @@ public class RemoteDB {
                 localRestaurants.clear();
                 for (DataSnapshot restSnapshot: dataSnapshot.getChildren()) {
                     Restaurant rest = restSnapshot.getValue(Restaurant.class);
+                    rest.Id = restSnapshot.getKey();
+
                     localRestaurants.add(rest);
                 }
 

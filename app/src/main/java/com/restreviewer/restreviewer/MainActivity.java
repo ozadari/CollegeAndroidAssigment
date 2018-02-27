@@ -26,7 +26,6 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        // TODO: Get All Restaurant
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
             public void done(final List<Restaurant> allRest) {
@@ -82,12 +81,21 @@ public class MainActivity extends AppCompatActivity {
 
             convertView.setTag(position);
 
-            Restaurant currRest = restaurants.get(position);
+            final Restaurant currRest = restaurants.get(position);
             name.setText(currRest.Name);
             type.setText(currRest.FoodType);
             phone.setText(currRest.Telephone);
-            // TODO: set the restaurant image
 
+            Button btnWatch = (Button) convertView.findViewById(R.id.btnWatchRest);
+            btnWatch.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+
+                    Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
+                    intent.putExtra("id", currRest.Id);
+                    startActivity(intent);
+                }
+            });
             return convertView;
         }
     }
