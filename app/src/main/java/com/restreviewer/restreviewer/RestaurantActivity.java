@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
+import android.widget.ListView;
 import android.widget.TextView;
 
 import com.restreviewer.restreviewer.Models.Restaurant;
@@ -22,12 +23,9 @@ public class RestaurantActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_restaurant);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
 
         // Get the restaurant
         final Restaurant restaurant = (Restaurant) getIntent().getSerializableExtra("Restaurant");
-        getSupportActionBar().setTitle(restaurant.getName());
 
         // Initialize all the text by the rest info
         TextView restaurantAddressText = (TextView) findViewById(R.id.restaurant_address);

@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-//        setSupportActionBar(toolbar);
+        setSupportActionBar(toolbar);
 
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
@@ -95,9 +95,8 @@ public class MainActivity extends AppCompatActivity {
             btnWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
                     Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
-                    intent.putExtra("id", currRest);
+                    intent.putExtra("Restaurant", currRest);
                     startActivity(intent);
                 }
             });
