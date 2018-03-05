@@ -29,7 +29,7 @@ public class MainActivity extends AppCompatActivity {
         setContentView(R.layout.activity_main);
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
 
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
@@ -87,9 +87,9 @@ public class MainActivity extends AppCompatActivity {
             convertView.setTag(position);
 
             final Restaurant currRest = restaurants.get(position);
-            name.setText(currRest.Name);
-            type.setText(currRest.FoodType);
-            phone.setText(currRest.Telephone);
+            name.setText(currRest.getName());
+            type.setText(currRest.getType());
+            phone.setText(currRest.getPhone());
 
             Button btnWatch = (Button) convertView.findViewById(R.id.btnWatchRest);
             btnWatch.setOnClickListener(new View.OnClickListener() {

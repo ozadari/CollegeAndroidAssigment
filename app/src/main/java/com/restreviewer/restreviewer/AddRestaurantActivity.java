@@ -33,9 +33,9 @@ public class AddRestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Restaurant newRest = new Restaurant();
-                newRest.Name = restName.getText().toString();
-                newRest.Telephone = phoneNumber.getText().toString();
-                newRest.FoodType = foodType.getSelectedItem().toString();
+                newRest.setName(restName.getText().toString());
+                newRest.setPhone(phoneNumber.getText().toString());
+                newRest.setType(foodType.getSelectedItem().toString());
 
                 Model.instance().addRestaurant(newRest, new Model.AddRestaurantListener(){
                     @Override

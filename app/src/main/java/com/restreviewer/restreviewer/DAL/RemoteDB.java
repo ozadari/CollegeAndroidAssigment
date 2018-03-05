@@ -86,9 +86,7 @@ public class RemoteDB {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.e("Count " ,""+dataSnapshot.getChildrenCount());
                 final List<Restaurant> allRestaurants = new ArrayList<Restaurant>();
-
                 if (dataSnapshot.exists()) {
-
                     for (DataSnapshot child: dataSnapshot.getChildren()) {
                         Restaurant restaurant = child.getValue(Restaurant.class);
                         allRestaurants.add(restaurant);

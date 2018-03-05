@@ -38,9 +38,14 @@ public class LocalRestaurants {
         db.execSQL("drop table " + RESTAURANT_TABLE + ";");
     }
 
+    public static void truncate(SQLiteDatabase db) {
+        db.execSQL("delete from " + RESTAURANT_TABLE + ";");
+    }
+
     public static List<Restaurant> getAllRestaurants(SQLiteDatabase db) {
         Cursor cursor = db.query(RESTAURANT_TABLE, null, null , null, null, null, null);
         List<Restaurant> allRestaurants = new LinkedList<Restaurant>();
+        allRestaurants.clear();
 
         if (cursor.moveToFirst()) {
             int idIndex = cursor.getColumnIndex(RESTAURANT_TABLE_ID);

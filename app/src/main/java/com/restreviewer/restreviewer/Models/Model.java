@@ -59,6 +59,7 @@ public class Model {
                 if(restaurants != null && restaurants.size() > 0) {
                     //update the local DB
                     String recentUpdate = lastUpdateDate;
+                    LocalRestaurants.truncate(local.getWritableDB());
                     for (Restaurant res : restaurants) {
                         LocalRestaurants.addRestaurant(local.getWritableDB(), res);
                         if (recentUpdate == null || res.getLastUpdated().compareTo(recentUpdate) > 0) {

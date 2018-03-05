@@ -10,13 +10,13 @@ import java.util.List;
  */
 
 public class Restaurant implements Serializable {
-    public Integer Id;
-    public String Name;
-    public String Address;
-    public String FoodType;
-    public Boolean Deliveries;
-    public Boolean Kosher;
-    public String Telephone;
+    private Integer Id;
+    private String Name;
+    private String Address;
+    private String FoodType;
+    private Boolean Deliveries;
+    private Boolean Kosher;
+    private String Telephone;
     String lastUpdated;
 
     public Restaurant() {
