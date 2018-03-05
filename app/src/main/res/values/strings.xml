@@ -7,4 +7,7 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="details">Details</string>
+    <string name="all_restaurants">All Restaurants</string>
+    <string name="rating_the_restaurant">rating the restaurant</string>
+    <string name="title_activity_add_comment">AddCommentActivity</string>
 </resources>

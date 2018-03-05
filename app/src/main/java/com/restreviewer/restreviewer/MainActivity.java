@@ -1,8 +1,10 @@
 package com.restreviewer.restreviewer;
 
 import android.content.Intent;
+import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.widget.Toolbar;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -26,11 +28,14 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
             public void done(final List<Restaurant> allRest) {
                 restaurants = allRest;
-                ListView restList = (ListView)findViewById(R.id.resturant_main_list);
+                ListView restList = (ListView)findViewById(R.id.restaurant_main_list);
                 restAdapter = new ResurantListAdapter();
                 restList.setAdapter(restAdapter);
                 };
@@ -39,7 +44,7 @@ public class MainActivity extends AppCompatActivity {
         // TODO: click on rest event
 
         // Add Restaurant button
-        Button addRest = (Button) findViewById(R.id.btnAddRest);
+        FloatingActionButton addRest = (FloatingActionButton) findViewById(R.id.btnAddRest);
 
         addRest.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -92,7 +97,7 @@ public class MainActivity extends AppCompatActivity {
                 public void onClick(View view) {
 
                     Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
-                    intent.putExtra("id", currRest.Id);
+                    intent.putExtra("id", currRest);
                     startActivity(intent);
                 }
             });
