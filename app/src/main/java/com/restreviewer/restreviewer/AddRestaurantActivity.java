@@ -9,6 +9,7 @@ import android.widget.EditText;
 import android.widget.Spinner;
 
 import com.restreviewer.restreviewer.Models.Model;
+import com.restreviewer.restreviewer.Models.Restaurant;
 
 public class AddRestaurantActivity extends AppCompatActivity {
 

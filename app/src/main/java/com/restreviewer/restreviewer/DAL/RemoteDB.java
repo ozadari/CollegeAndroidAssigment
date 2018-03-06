@@ -1,14 +1,21 @@
 package com.restreviewer.restreviewer.DAL;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
 import com.restreviewer.restreviewer.Models.Comment;
 import com.restreviewer.restreviewer.Models.Model;
-import com.restreviewer.restreviewer.Restaurant;
+import com.restreviewer.restreviewer.Models.Restaurant;
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
@@ -24,6 +31,8 @@ import java.util.List;
 
 public class RemoteDB {
     FirebaseDatabase database = FirebaseDatabase.getInstance();
+    FirebaseStorage storage = FirebaseStorage.getInstance();
+    final StorageReference storageRef = storage.getReference();
     DatabaseReference restaurantsReference = database.getReference("Restaurants");
     DatabaseReference commentsReference = database.getReference("Comments");
 
@@ -117,6 +126,27 @@ public class RemoteDB {
                     System.out.println("Data saved successfully.");
                     listener.done(newCommentRef.getKey());
                 }
+            }
+        });
+    }
+
+    public void loadImageByBytes(final Restaurant restaurant, final OnSuccessListener<Bitmap> listener){
+        storageRef.child("images/" + restaurant.getId() + ".jpg").getBytes(Long.MAX_VALUE).addOnSuccessListener(new OnSuccessListener<byte[]>() {
+            @Override
+            public void onSuccess(byte[] data) {
+                Bitmap bmp;
+                BitmapFactory.Options options = new BitmapFactory.Options();
+                options.inMutable = true;
+                bmp = BitmapFactory.decodeByteArray(data, 0, data.length, options);
+
+                listener.onSuccess(bmp);
+
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle any errors
+                listener.onSuccess(null);
             }
         });
     }

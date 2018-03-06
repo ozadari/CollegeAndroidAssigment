@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 import com.restreviewer.restreviewer.Models.Comment;
 import com.restreviewer.restreviewer.Models.Model;
+import com.restreviewer.restreviewer.Models.Restaurant;
 
 public class AddCommentActivity extends AppCompatActivity {
     EditText editName;

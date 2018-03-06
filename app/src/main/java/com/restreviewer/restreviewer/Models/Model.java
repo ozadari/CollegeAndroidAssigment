@@ -1,11 +1,24 @@
 package com.restreviewer.restreviewer.Models;
 
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.net.Uri;
+import android.os.Build;
+import android.os.Environment;
+import android.support.annotation.RequiresApi;
+import android.util.Log;
+
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.restreviewer.restreviewer.DAL.LocalDB;
 import com.restreviewer.restreviewer.DAL.LocalRestaurants;
 import com.restreviewer.restreviewer.DAL.RemoteDB;
 import com.restreviewer.restreviewer.MyApplication;
-import com.restreviewer.restreviewer.Restaurant;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.OutputStream;
 import java.util.List;
 
 /**
@@ -33,6 +46,10 @@ public class Model {
 
     public interface AddCommentListener {
         void done(String key);
+    }
+
+    public interface LoadImageListener{
+        void onResult(List<Restaurant> imageBmp);
     }
 
     public interface GetRestaurantsListener {
@@ -78,5 +95,101 @@ public class Model {
 
     public void addComment(Comment comment, AddCommentListener listener) {
         remote.addComment(comment, listener);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    public void loadImages(final List<Restaurant> restaurants, final LoadImageListener listener) {
+        if (restaurants.size() == 0)
+            listener.onResult(restaurants);
+
+        final Counter counter = new Counter(restaurants.size());
+
+        for (final Restaurant restaurant : restaurants) {
+            final String imageName = restaurant.getId() + ".jpg";
+            Uri uri = loadImageUriFromFile(imageName);
+            if (uri != null){
+                restaurant.setImageUri(uri);
+
+                if (counter.Up())
+                    listener.onResult(restaurants);
+            }else{
+                remote.loadImageByBytes(restaurant, new OnSuccessListener<Bitmap>() {
+                    @Override
+                    public void onSuccess(Bitmap bitmap) {
+                        if (bitmap != null){
+                            saveImageToFile(bitmap, imageName);    //save the image locally for next time
+                            bitmap.recycle();
+                            bitmap = null;
+                            restaurant.setImageUri(loadImageUriFromFile(imageName));
+                        }
+
+                        if (counter.Up())
+                            listener.onResult(restaurants);
+                    }
+                });
+            }
+        }
+
+        //listener.onResult(comments);
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    private void saveImageToFile(Bitmap imageBitmap, String imageFileName){
+        OutputStream out = null;
+        try {
+            File dir = Environment.getExternalStoragePublicDirectory(
+                    Environment.DIRECTORY_PICTURES);
+            if (!dir.exists()) {
+                dir.mkdir();
+            }
+            File imageFile = new File(dir,imageFileName);
+            imageFile.createNewFile();
+
+            out = new FileOutputStream(imageFile);
+            imageBitmap.compress(Bitmap.CompressFormat.JPEG, 25, out);
+            out.close();
+
+            //add the picture to the gallery so we dont need to manage the cache size
+            Intent mediaScanIntent = new Intent(Intent.ACTION_MEDIA_SCANNER_SCAN_FILE);
+            Uri contentUri = Uri.fromFile(imageFile);
+            mediaScanIntent.setData(contentUri);
+            MyApplication.getContext().sendBroadcast(mediaScanIntent);
+            Log.d("tag","add image to cache: " + imageFileName);
+
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    private Uri loadImageUriFromFile(String imageFileName){
+
+        File dir = Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES);
+        File imageFile = new File(dir,imageFileName);
+
+        if (!imageFile.exists()){
+            return null;
+        }
+
+        Uri uri = Uri.fromFile(imageFile);
+        Log.d("tag","got image from cache: " + imageFileName);
+        return uri;
+    }
+
+    private class Counter {
+        public Integer count = 0;
+        public Integer limit;
+
+
+        public Counter(Integer limit){
+            this.limit = limit;
+        }
+
+        public Boolean Up(){
+            count++;
+            return (count == limit || count == 5);
+        }
     }
 }
