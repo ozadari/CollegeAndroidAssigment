@@ -66,7 +66,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-/*
+
         Button addReview = (Button) findViewById(R.id.add_review);
 
         addReview.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +76,6 @@ public class RestaurantActivity extends AppCompatActivity {
                 intent.putExtra("Restaurant", restaurant);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 }

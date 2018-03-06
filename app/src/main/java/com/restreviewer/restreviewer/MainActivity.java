@@ -41,8 +41,6 @@ public class MainActivity extends AppCompatActivity {
                 };
         });
 
-        // TODO: click on rest event
-
         // Add Restaurant button
         FloatingActionButton addRest = (FloatingActionButton) findViewById(R.id.btnAddRest);
 
