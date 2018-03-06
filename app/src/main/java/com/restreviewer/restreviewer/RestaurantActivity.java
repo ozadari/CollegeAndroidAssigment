@@ -15,8 +15,6 @@ import android.widget.ImageButton;
 import android.widget.ListView;
 import android.widget.TextView;
 
-import com.restreviewer.restreviewer.Models.Restaurant;
-
 public class RestaurantActivity extends AppCompatActivity {
 
     @Override

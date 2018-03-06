@@ -4,6 +4,7 @@ import com.restreviewer.restreviewer.DAL.LocalDB;
 import com.restreviewer.restreviewer.DAL.LocalRestaurants;
 import com.restreviewer.restreviewer.DAL.RemoteDB;
 import com.restreviewer.restreviewer.MyApplication;
+import com.restreviewer.restreviewer.Restaurant;
 
 import java.util.List;
 

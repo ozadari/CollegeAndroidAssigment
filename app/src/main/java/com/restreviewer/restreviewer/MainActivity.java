@@ -15,7 +15,6 @@ import android.widget.ListView;
 import android.widget.TextView;
 
 import com.restreviewer.restreviewer.Models.Model;
-import com.restreviewer.restreviewer.Models.Restaurant;
 
 import java.util.List;
 

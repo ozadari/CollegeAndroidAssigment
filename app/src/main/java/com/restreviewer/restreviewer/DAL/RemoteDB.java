@@ -7,7 +7,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.restreviewer.restreviewer.Models.Comment;
 import com.restreviewer.restreviewer.Models.Model;
-import com.restreviewer.restreviewer.Models.Restaurant;
+import com.restreviewer.restreviewer.Restaurant;
 import android.content.Context;
 import android.util.Log;
 
@@ -32,15 +32,14 @@ public class RemoteDB {
     }
 
     public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
-        final DatabaseReference newRestaurantRef = restaurantsReference.push();
-        newRestaurantRef.setValue(restaurant, new Firebase.CompletionListener(){
+        restaurantsReference.setValue(restaurant, new Firebase.CompletionListener(){
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
                     System.out.println("Data could not be saved. " + firebaseError.getMessage());
                 } else {
                     System.out.println("Data saved successfully.");
-                    listener.done(newRestaurantRef.getKey());
+                    listener.done(restaurantsReference.getKey());
                 }
             }
         });

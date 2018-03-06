@@ -1,4 +1,4 @@
-package com.restreviewer.restreviewer.Models;
+package com.restreviewer.restreviewer;
 
 import android.support.annotation.IntegerRes;
 

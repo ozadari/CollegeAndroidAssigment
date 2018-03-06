@@ -4,7 +4,7 @@ import android.content.ContentValues;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
-import com.restreviewer.restreviewer.Models.Restaurant;
+import com.restreviewer.restreviewer.Restaurant;
 
 import java.util.LinkedList;
 import java.util.List;
