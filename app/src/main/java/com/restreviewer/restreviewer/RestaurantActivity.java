@@ -7,15 +7,15 @@ import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
-import android.widget.ListView;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.restreviewer.restreviewer.Models.Restaurant;
+import com.squareup.picasso.Picasso;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -42,6 +42,8 @@ public class RestaurantActivity extends AppCompatActivity {
         restaurantKosherBox.setClickable(false);
         restaurantKosherBox.setEnabled(false);
         restaurantKosherBox.setChecked(restaurant.getKosher());
+        ImageView image = (ImageView) findViewById(R.id.restaurant_image);
+        Picasso.with(MyApplication.getContext()).load(restaurant.getImageUri()).into(image);
 
         // Manage the comments manager
         FragmentManager fragmentManager = getFragmentManager();
@@ -66,7 +68,7 @@ public class RestaurantActivity extends AppCompatActivity {
                 startActivity(intent);
             }
         });
-/*
+
         Button addReview = (Button) findViewById(R.id.add_review);
 
         addReview.setOnClickListener(new View.OnClickListener() {
@@ -76,6 +78,6 @@ public class RestaurantActivity extends AppCompatActivity {
                 intent.putExtra("Restaurant", restaurant);
                 startActivity(intent);
             }
-        });*/
+        });
     }
 }

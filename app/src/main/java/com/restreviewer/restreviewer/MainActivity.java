@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
@@ -34,14 +35,23 @@ public class MainActivity extends AppCompatActivity {
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
             public void done(final List<Restaurant> allRest) {
-                restaurants = allRest;
+                Model.instance().loadImages(allRest, new Model.LoadImageListener(){
+
+                    @Override
+                    public void onResult(List<Restaurant> restaurantsWithImages) {
+                        restaurants = restaurantsWithImages;
+                        ListView restList = (ListView)findViewById(R.id.restaurant_main_list);
+                        restAdapter = new ResurantListAdapter();
+                        restList.setAdapter(restAdapter);
+                    }
+                });
+
+                /*restaurants = allRest;
                 ListView restList = (ListView)findViewById(R.id.restaurant_main_list);
                 restAdapter = new ResurantListAdapter();
-                restList.setAdapter(restAdapter);
+                restList.setAdapter(restAdapter);*/
                 };
         });
-
-        // TODO: click on rest event
 
         // Add Restaurant button
         FloatingActionButton addRest = (FloatingActionButton) findViewById(R.id.btnAddRest);
@@ -90,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
             name.setText(currRest.getName());
             type.setText(currRest.getType());
             phone.setText(currRest.getPhone());
-
+            Picasso.with(MyApplication.getContext()).load(currRest.getImageUri()).into(image);
             Button btnWatch = (Button) convertView.findViewById(R.id.btnWatchRest);
             btnWatch.setOnClickListener(new View.OnClickListener() {
                 @Override

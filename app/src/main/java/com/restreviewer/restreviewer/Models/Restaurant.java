@@ -1,5 +1,7 @@
 package com.restreviewer.restreviewer.Models;
 
+import android.graphics.Bitmap;
+import android.net.Uri;
 import android.support.annotation.IntegerRes;
 
 import java.io.Serializable;
@@ -17,6 +19,8 @@ public class Restaurant implements Serializable {
     private Boolean Deliveries;
     private Boolean Kosher;
     private String Telephone;
+    private Bitmap image;
+    private Uri imageUri;
     String lastUpdated;
 
     public Restaurant() {
@@ -88,6 +92,22 @@ public class Restaurant implements Serializable {
 
     public void setDeliveries(Boolean parking) {
         this.Deliveries = parking;
+    }
+
+    public Bitmap getImage() {
+        return image;
+    }
+
+    public void setImage(Bitmap image) {
+        this.image = image;
+    }
+
+    public Uri getImageUri() {
+        return imageUri;
+    }
+
+    public void setImageUri(Uri imageUri) {
+        this.imageUri = imageUri;
     }
 
     public String getLastUpdated() {
