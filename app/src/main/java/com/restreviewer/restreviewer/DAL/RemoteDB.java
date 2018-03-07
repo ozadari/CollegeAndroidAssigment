@@ -9,18 +9,21 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
 import com.restreviewer.restreviewer.Models.Comment;
 import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
 import com.firebase.client.FirebaseError;
 
+import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -41,7 +44,8 @@ public class RemoteDB {
     }
 
     public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
-        restaurantsReference.setValue(restaurant, new Firebase.CompletionListener(){
+        final DatabaseReference newRestRef = restaurantsReference.push();
+        newRestRef.setValue(restaurant, new Firebase.CompletionListener(){
             @Override
             public void onComplete(FirebaseError firebaseError, Firebase firebase) {
                 if (firebaseError != null) {
@@ -147,6 +151,33 @@ public class RemoteDB {
             public void onFailure(@NonNull Exception exception) {
                 // Handle any errors
                 listener.onSuccess(null);
+            }
+        });
+    }
+
+    public void uploadImage(String restaurantId, Bitmap bitmap, final OnSuccessListener successListener){
+        // Create a reference to 'images/mountains.jpg'
+        StorageReference imageRef = storageRef.child("images/" + restaurantId + ".jpg");
+
+        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+
+        UploadTask uploadTask = imageRef.putBytes(imageByteArray);
+        uploadTask.addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception exception) {
+                // Handle unsuccessful uploads
+                System.out.println("image upload failed");
+                successListener.onSuccess("without image");
+            }
+        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+            @Override
+            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                System.out.println("image successfully saved");
+                successListener.onSuccess("");
             }
         });
     }

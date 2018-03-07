@@ -129,8 +129,11 @@ public class Model {
                 });
             }
         }
+    }
 
-        //listener.onResult(comments);
+    public void saveImage(final String imageName, final Bitmap imageBitmap, final OnSuccessListener listener) {
+        saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
+        remote.uploadImage(imageName, imageBitmap, listener);
     }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
