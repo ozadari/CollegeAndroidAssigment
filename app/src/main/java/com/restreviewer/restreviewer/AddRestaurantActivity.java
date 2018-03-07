@@ -89,7 +89,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                     @Override
                     public void done(String key) {
                         System.out.println("restaurant successfully saved");
-                        Model.instance().saveImage(key,imageBitmap, new OnSuccessListener<String>(){
+                        Model.instance().saveImage(key,imageUri, new OnSuccessListener<String>(){
                             @Override
                             public void onSuccess(String message) {
                                 Toast.makeText(
@@ -117,7 +117,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                     e.printStackTrace();
                 }
             } else if (requestCode == 0) {
-                Uri imageUri = data.getData();
+                imageUri = data.getData();
 
                 try {
                     imageBitmap = MediaStore.Images.Media.getBitmap(MyApplication.getContext().getContentResolver(), imageUri);

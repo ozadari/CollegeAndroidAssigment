@@ -12,12 +12,12 @@ import java.util.Calendar;
  */
 
 public class Comment {
-    public String Id;
-    public String Title;
-    public String Content;
-    public Float Rate;
-    public String Date;
-    public Integer Restaurant_Id;
+    private String Id;
+    private String Title;
+    private String Content;
+    private Float Rate;
+    private String Date;
+    private Integer Restaurant_Id;
 
     public Comment() {
     }

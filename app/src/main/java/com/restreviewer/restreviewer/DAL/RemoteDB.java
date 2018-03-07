@@ -44,18 +44,19 @@ public class RemoteDB {
     }
 
     public void addRestaurant(Restaurant restaurant, final Model.AddRestaurantListener listener) {
-        final DatabaseReference newRestRef = restaurantsReference.push();
-        newRestRef.setValue(restaurant, new Firebase.CompletionListener(){
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                    listener.done(restaurantsReference.getKey());
-                }
-            }
-        });
+        restaurantsReference.push().setValue(restaurant);
+//        final DatabaseReference newRestRef = restaurantsReference.push();
+//        newRestRef.setValue(restaurant, new Firebase.CompletionListener(){
+//            @Override
+//            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
+//                if (firebaseError != null) {
+//                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
+//                } else {
+//                    System.out.println("Data saved successfully.");
+//                    listener.done(restaurantsReference.getKey());
+//                }
+//            }
+//        });
     }
 
     public void getComments(Integer restaurantId, final Model.GetCommentsListener listener) {
@@ -155,30 +156,51 @@ public class RemoteDB {
         });
     }
 
-    public void uploadImage(String restaurantId, Bitmap bitmap, final OnSuccessListener successListener){
+//    public void uploadImage(String restaurantId, Bitmap bitmap, final OnSuccessListener successListener){
+//        // Create a reference to 'images/mountains.jpg'
+//        StorageReference imageRef = storageRef.child("images/" + restaurantId + ".jpg");
+//
+//        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+//        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
+//        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
+//
+//        UploadTask uploadTask = imageRef.putBytes(imageByteArray);
+//        uploadTask.addOnFailureListener(new OnFailureListener() {
+//            @Override
+//            public void onFailure(@NonNull Exception exception) {
+//                // Handle unsuccessful uploads
+//                System.out.println("image upload failed");
+//                successListener.onSuccess("without image");
+//            }
+//        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+//            @Override
+//            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+//                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
+//                Uri downloadUrl = taskSnapshot.getDownloadUrl();
+//                System.out.println("image successfully saved");
+//                successListener.onSuccess("");
+//            }
+//        });
+//    }
+
+    public void uploadImage(String restaurantId, Uri imageUri, final OnSuccessListener successListener){
         // Create a reference to 'images/mountains.jpg'
         StorageReference imageRef = storageRef.child("images/" + restaurantId + ".jpg");
 
-        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 25, byteArrayOutputStream);
-        byte[] imageByteArray = byteArrayOutputStream.toByteArray();
-
-        UploadTask uploadTask = imageRef.putBytes(imageByteArray);
-        uploadTask.addOnFailureListener(new OnFailureListener() {
-            @Override
-            public void onFailure(@NonNull Exception exception) {
-                // Handle unsuccessful uploads
-                System.out.println("image upload failed");
-                successListener.onSuccess("without image");
-            }
-        }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
-            @Override
-            public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
-                // taskSnapshot.getMetadata() contains file metadata such as size, content-type, and download URL.
-                Uri downloadUrl = taskSnapshot.getDownloadUrl();
-                System.out.println("image successfully saved");
-                successListener.onSuccess("");
-            }
-        });
+        imageRef.putFile(imageUri)
+                .addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        // Get a URL to the uploaded content
+                        Uri downloadUrl = taskSnapshot.getDownloadUrl();
+                    }
+                })
+                .addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        // Handle unsuccessful uploads
+                        // ...
+                    }
+                });
     }
 }

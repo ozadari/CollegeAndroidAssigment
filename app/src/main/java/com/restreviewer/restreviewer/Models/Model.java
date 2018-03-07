@@ -131,8 +131,8 @@ public class Model {
         }
     }
 
-    public void saveImage(final String imageName, final Bitmap imageBitmap, final OnSuccessListener listener) {
-        saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
+    public void saveImage(final String imageName, final Uri imageBitmap, final OnSuccessListener listener) {
+//        saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
         remote.uploadImage(imageName, imageBitmap, listener);
     }
 

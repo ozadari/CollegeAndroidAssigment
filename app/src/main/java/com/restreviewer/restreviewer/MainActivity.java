@@ -1,5 +1,6 @@
 package com.restreviewer.restreviewer;
 
+import android.app.ProgressDialog;
 import android.content.Intent;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
@@ -23,6 +24,7 @@ import java.util.List;
 public class MainActivity extends AppCompatActivity {
     ResurantListAdapter restAdapter;
     List<Restaurant> restaurants;
+    ProgressDialog nDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -31,6 +33,14 @@ public class MainActivity extends AppCompatActivity {
 
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
+
+
+        nDialog = new ProgressDialog(MainActivity.this);
+        nDialog.setMessage("Loading..");
+        nDialog.setTitle("Loading");
+        nDialog.setIndeterminate(false);
+        nDialog.setCancelable(true);
+        nDialog.show();
 
         Model.instance().getRestaurants(new Model.GetRestaurantsListener() {
             @Override
@@ -43,6 +53,7 @@ public class MainActivity extends AppCompatActivity {
                         ListView restList = (ListView)findViewById(R.id.restaurant_main_list);
                         restAdapter = new ResurantListAdapter();
                         restList.setAdapter(restAdapter);
+                        nDialog.dismiss();
                     }
                 });
 
