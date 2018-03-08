@@ -14,20 +14,25 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
 import android.widget.Button;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.ListView;
 import android.widget.TextView;
 
+import com.restreviewer.restreviewer.Models.Favorite;
 import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import com.squareup.picasso.Picasso;
 
+import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
     ResurantListAdapter restAdapter;
     List<Restaurant> restaurants;
     ProgressDialog nDialog;
+    String userId;
+    Favorite[] favorites;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,7 +47,8 @@ public class MainActivity extends AppCompatActivity {
 
         }
 
-        getIntent().getExtras().get("favorites");
+        userId = getIntent().getExtras().get("userId").toString();
+        favorites = (Favorite[]) getIntent().getExtras().get("favorites");
 
         nDialog = new ProgressDialog(MainActivity.this);
         nDialog.setMessage("Loading..");
@@ -113,6 +119,7 @@ public class MainActivity extends AppCompatActivity {
             TextView name = (TextView) convertView.findViewById(R.id.restName);
             TextView type = (TextView) convertView.findViewById(R.id.restType);
             TextView phone = (TextView) convertView.findViewById(R.id.restPhone);
+            final ImageButton favBtn = (ImageButton) convertView.findViewById(R.id.favorite);
 
             convertView.setTag(position);
 
@@ -131,7 +138,32 @@ public class MainActivity extends AppCompatActivity {
                     startActivity(intent);
                 }
             });
+
+            favBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View view) {
+                    if (isRestaurantFavorite(currRest.getId())) {
+                        // todo: remove
+                    } else {
+                        Favorite fav = new Favorite(userId, currRest.getId());
+                        Model.instance().addFavorite(fav, new Model.AddFavoritesListener() {
+                            @Override
+                            public void done(String key) {
+                                favBtn.setImageResource(R.drawable.staron);
+                            }
+                        });
+                    }
+                }
+            });
             return convertView;
+        }
+
+        private boolean isRestaurantFavorite(String restaurantId){
+            for(int i = 0; i< favorites.length; i++) {
+                if(favorites[i].getRID() == restaurantId)
+                    return  true;
+            }
+            return false;
         }
     }
 }

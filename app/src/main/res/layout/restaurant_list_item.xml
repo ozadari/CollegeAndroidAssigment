@@ -45,13 +45,30 @@
             android:layout_height="wrap_content"
             android:layout_marginBottom="2dp"
             android:text="RestPhone" />
+
     </LinearLayout>
 
-    <Button
-        android:id="@+id/btnWatchRest"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <LinearLayout
+        android:layout_width="64dp"
+        android:layout_height="match_parent"
         android:layout_weight="1"
-        android:text="Watch" />
+        android:orientation="vertical">
 
+        <ImageButton
+            android:id="@+id/favorite"
+            android:layout_width="match_parent"
+            android:layout_height="38dp"
+            android:layout_weight="1"
+            android:background="#00ffffff"
+            android:onClick="onToggleStar"
+            android:src="@drawable/staroff" />
+
+        <Button
+            android:id="@+id/btnWatchRest"
+            android:layout_width="match_parent"
+            android:layout_height="37dp"
+            android:layout_weight="1"
+            android:text="Watch"
+            android:textSize="12dp" />
+    </LinearLayout>
 </LinearLayout>

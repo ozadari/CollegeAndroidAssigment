@@ -69,6 +69,9 @@ public class Model {
     public interface GetFavoritesListener {
         void done(List<Favorite> stList);
     }
+    public interface AddFavoritesListener {
+        void done(String key);
+    }
 
     public void addRestaurant(Restaurant newRest, AddRestaurantListener listener) {
         remote.addRestaurant(newRest, listener);
@@ -111,7 +114,7 @@ public class Model {
         remote.addComment(comment, listener);
     }
 
-    public void addFavorite(Favorite favorite, AddCommentListener listener) {
+    public void addFavorite(Favorite favorite, AddFavoritesListener listener) {
         remote.addFavorite(favorite, listener);
     }
 

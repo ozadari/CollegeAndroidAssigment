@@ -150,7 +150,7 @@ public class RemoteDB {
         listener.done(newCommentRef.getKey());
     }
 
-    public void addFavorite(Favorite favorite, final Model.AddCommentListener listener) {
+    public void addFavorite(Favorite favorite, final Model.AddFavoritesListener listener) {
         final DatabaseReference newFavoriteRef = favoritesReference.push();
         newFavoriteRef.setValue(favorite);
         listener.done(newFavoriteRef.getKey());
