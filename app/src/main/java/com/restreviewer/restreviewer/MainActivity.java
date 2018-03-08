@@ -121,11 +121,12 @@ public class MainActivity extends AppCompatActivity {
             name.setText(currRest.getName());
             type.setText(currRest.getType());
             phone.setText(currRest.getPhone());
-            Picasso.with(MyApplication.getContext()).load(currRest.getImageUri()).into(image);
+            Picasso.with(MyApplication.getContext()).load(currRest.getImageUri()).resize(300,200).into(image);
             Button btnWatch = (Button) convertView.findViewById(R.id.btnWatchRest);
             btnWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
+                    currRest.emptyImage();
                     Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
                     intent.putExtra("Restaurant", currRest);
                     startActivity(intent);

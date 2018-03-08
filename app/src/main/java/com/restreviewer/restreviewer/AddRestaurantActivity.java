@@ -1,5 +1,6 @@
 package com.restreviewer.restreviewer;
 
+import android.app.ProgressDialog;
 import android.content.ContentValues;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -40,25 +41,6 @@ public class AddRestaurantActivity extends AppCompatActivity {
         final CheckBox Deliveries = (CheckBox) findViewById(R.id.restaurant_deliveries);
         final CheckBox Kosher = (CheckBox) findViewById(R.id.restaurant_kosher);
 
-        /*ImageButton cameraButton = (ImageButton) findViewById(R.id.camera_button);
-        cameraButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                ContentValues values = new ContentValues();
-                values.put(MediaStore.Images.Media.TITLE, "New Picture");
-                values.put(MediaStore.Images.Media.DESCRIPTION, "From your Camera");
-                imageUri = getContentResolver().insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, values);
-
-                Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-
-                takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, imageUri);
-
-                if (takePictureIntent.resolveActivity(getPackageManager()) != null) {
-                    startActivityForResult(takePictureIntent, 1);
-                }
-            }
-        });*/
-
         ImageButton galleryButton = (ImageButton) findViewById(R.id.gallery_button);
         galleryButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -77,6 +59,8 @@ public class AddRestaurantActivity extends AppCompatActivity {
         addButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
+
                 final Restaurant newRest = new Restaurant();
                 newRest.setName(restName.getText().toString());
                 newRest.setAddress(restAddress.getText().toString());
@@ -84,8 +68,21 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 newRest.setPhone(restPhone.getText().toString());
                 newRest.setDeliveries(Deliveries.isChecked());
                 newRest.setKosher(Kosher.isChecked());
-                newRest.setImageUri(imageUri);
-                //newRest.setImage(imageBitmap);
+
+                final ProgressDialog nDialog = new ProgressDialog(AddRestaurantActivity.this);
+                nDialog.setMessage("Loading..");
+                nDialog.setTitle("Loading");
+                nDialog.setIndeterminate(false);
+                nDialog.setCancelable(true);
+                nDialog.show();
+
+
+                if (newRest.getName().length() == 0 || newRest.getAddress().length() == 0 || newRest.getPhone().length() == 0){
+                    Toast.makeText(MyApplication.getContext(),"Please fill all fields", Toast.LENGTH_SHORT).show();
+                    return;
+                }
+
+
 
                 Model.instance().addRestaurant(newRest, new Model.AddRestaurantListener(){
                     @Override
@@ -100,6 +97,7 @@ public class AddRestaurantActivity extends AppCompatActivity {
                                 Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
                                 intent.putExtra("Restaurant", newRest);
                                 startActivity(intent);
+                                nDialog.dismiss();
                                 finish();
                             }
                         });

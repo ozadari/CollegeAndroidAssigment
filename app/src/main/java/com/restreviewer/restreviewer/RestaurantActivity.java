@@ -12,10 +12,14 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 
+import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import com.squareup.picasso.Picasso;
+
+import java.util.List;
 
 public class RestaurantActivity extends AppCompatActivity {
 
@@ -30,6 +34,8 @@ public class RestaurantActivity extends AppCompatActivity {
         // Initialize all the text by the rest info
         TextView restaurantAddressText = (TextView) findViewById(R.id.restaurant_address);
         restaurantAddressText.setText(restaurant.getAddress());
+        TextView restaurantName = (TextView) findViewById(R.id.restaurant_name);
+        restaurantName.setText(restaurant.getName());
         TextView restaurantTypeText = (TextView) findViewById(R.id.restaurant_type);
         restaurantTypeText.setText(restaurant.getType());
         TextView restaurantPhoneText = (TextView) findViewById(R.id.restaurant_phone);
@@ -42,8 +48,17 @@ public class RestaurantActivity extends AppCompatActivity {
         restaurantKosherBox.setClickable(false);
         restaurantKosherBox.setEnabled(false);
         restaurantKosherBox.setChecked(restaurant.getKosher());
-        ImageView image = (ImageView) findViewById(R.id.restaurant_image);
-        Picasso.with(MyApplication.getContext()).load(restaurant.getImageUri()).into(image);
+        final ImageView image = (ImageView) findViewById(R.id.restaurant_image);
+
+        Model.instance().loadImage(restaurant,new Model.LoadImageListener(){
+            @Override
+            public void onResult(List<Restaurant> restaurantsWithImages) {
+                Picasso.with(MyApplication.getContext()).load(restaurant
+                        .getImageUri())
+                        .resize(600,400)
+                        .into(image);
+            }
+        });
 
         // Manage the comments manager
         FragmentManager fragmentManager = getFragmentManager();
@@ -75,6 +90,7 @@ public class RestaurantActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Intent intent = new Intent(getBaseContext(), AddCommentActivity.class);
+                restaurant.emptyImage();
                 intent.putExtra("Restaurant", restaurant);
                 startActivity(intent);
             }

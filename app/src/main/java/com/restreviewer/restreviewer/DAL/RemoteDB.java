@@ -113,17 +113,8 @@ public class RemoteDB {
 
     public void addComment(Comment comment, final Model.AddCommentListener listener) {
         final DatabaseReference newCommentRef = commentsReference.push();
-        newCommentRef.setValue(comment, new Firebase.CompletionListener() {
-            @Override
-            public void onComplete(FirebaseError firebaseError, Firebase firebase) {
-                if (firebaseError != null) {
-                    System.out.println("Data could not be saved. " + firebaseError.getMessage());
-                } else {
-                    System.out.println("Data saved successfully.");
-                    listener.done(newCommentRef.getKey());
-                }
-            }
-        });
+        newCommentRef.setValue(comment);
+        listener.done(newCommentRef.getKey());
     }
 
     public void loadImageByBytes(final Restaurant restaurant, final OnSuccessListener<Bitmap> listener){

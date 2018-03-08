@@ -117,4 +117,9 @@ public class Restaurant implements Serializable {
     public void setLastUpdated(String lastUpdated) {
         this.lastUpdated = lastUpdated;
     }
+
+    public void emptyImage() {
+        this.setImage(null);
+        this.setImageUri(null);
+    }
 }

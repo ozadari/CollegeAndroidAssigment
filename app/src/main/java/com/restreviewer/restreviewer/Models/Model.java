@@ -5,6 +5,8 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
+import android.provider.MediaStore;
+import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -19,7 +21,11 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.Iterator;
 import java.util.List;
+import java.util.ListIterator;
 
 /**
  * Created by paz on 07/02/2018.
@@ -131,6 +137,12 @@ public class Model {
         }
     }
 
+    @RequiresApi(api = Build.VERSION_CODES.FROYO)
+    public void loadImage(Restaurant rest, final LoadImageListener listener) {
+        List<Restaurant> list = new ArrayList<Restaurant>();
+        list.add(rest);
+        this.loadImages(list,listener);
+    }
     public void saveImage(final String imageName, final Bitmap imageBitmap, final OnSuccessListener listener) {
         saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
         remote.uploadImage(imageName, imageBitmap, listener);
