@@ -40,10 +40,9 @@ public class MainActivity extends AppCompatActivity {
         if (checkSelfPermission(android.Manifest.permission.WRITE_EXTERNAL_STORAGE) != PackageManager.PERMISSION_GRANTED) {
             ActivityCompat.requestPermissions(this, new String[]{android.Manifest.permission.WRITE_EXTERNAL_STORAGE}, 112);
 
-        } else {
-
         }
 
+        getIntent().getExtras().get("favorites");
 
         nDialog = new ProgressDialog(MainActivity.this);
         nDialog.setMessage("Loading..");

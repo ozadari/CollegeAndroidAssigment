@@ -11,6 +11,7 @@ import com.google.firebase.storage.FirebaseStorage;
 import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 import com.restreviewer.restreviewer.Models.Comment;
+import com.restreviewer.restreviewer.Models.Favorite;
 import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import android.content.Context;
@@ -38,6 +39,7 @@ public class RemoteDB {
     final StorageReference storageRef = storage.getReference();
     DatabaseReference restaurantsReference = database.getReference("Restaurants");
     DatabaseReference commentsReference = database.getReference("Comments");
+    DatabaseReference favoritesReference = database.getReference("Favorites");
 
     public RemoteDB(Context context){
         Firebase.setAndroidContext(context);
@@ -81,6 +83,37 @@ public class RemoteDB {
         });
     }
 
+    public void getFavorites(String UID, final Model.GetFavoritesListener listener) {
+        Query queryRef = favoritesReference.orderByChild("uid").equalTo(UID);
+
+        queryRef.addValueEventListener(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot snapshot) {
+                final List<Favorite> allFavorites = new ArrayList<Favorite>();
+
+                if (snapshot.exists()) {
+
+                    for (DataSnapshot child: snapshot.getChildren()) {
+                        final Favorite favorite = child.getValue(Favorite.class);
+
+                        favorite.setId(child.getKey());
+                        allFavorites.add(favorite);
+                    }
+                }
+                else {
+                    Log.e("no comments", "no comments");
+                }
+
+                listener.done(allFavorites);
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.w("ThisISTag", "Failed to read value.", error.toException());
+            }
+        });
+    }
     public void getRestaurants(final Model.GetRestaurantsListener listener, String lastUpdateDate) {
         Query queryRef = restaurantsReference.orderByChild("lastUpdated").startAt(lastUpdateDate);
 
@@ -115,6 +148,12 @@ public class RemoteDB {
         final DatabaseReference newCommentRef = commentsReference.push();
         newCommentRef.setValue(comment);
         listener.done(newCommentRef.getKey());
+    }
+
+    public void addFavorite(Favorite favorite, final Model.AddCommentListener listener) {
+        final DatabaseReference newFavoriteRef = favoritesReference.push();
+        newFavoriteRef.setValue(favorite);
+        listener.done(newFavoriteRef.getKey());
     }
 
     public void loadImageByBytes(final Restaurant restaurant, final OnSuccessListener<Bitmap> listener){

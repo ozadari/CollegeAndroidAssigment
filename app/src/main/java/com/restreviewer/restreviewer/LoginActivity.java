@@ -37,6 +37,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseUser;
+import com.restreviewer.restreviewer.Models.Favorite;
+import com.restreviewer.restreviewer.Models.Model;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -163,10 +165,16 @@ public class LoginActivity extends AppCompatActivity implements LoaderCallbacks<
                             if (task.isSuccessful()) {
                                 // Sign in success, update UI with the signed-in user's information
                                 Log.d("login", "signInWithEmail:success");
-                                FirebaseUser user = mAuth.getCurrentUser();
-                                Intent intent = new Intent(getBaseContext(), MainActivity.class);
-                                intent.putExtra("userId", user.getUid());
-                                startActivity(intent);
+                                final FirebaseUser user = mAuth.getCurrentUser();
+                                Model.instance().getFavorites(user.getUid(), new Model.GetFavoritesListener() {
+                                    @Override
+                                    public void done(List<Favorite> stList) {
+                                        Intent intent = new Intent(getBaseContext(), MainActivity.class);
+                                        intent.putExtra("userId", user.getUid());
+                                        intent.putExtra("favorites", stList.toArray());
+                                        startActivity(intent);
+                                    }
+                                });
 
                             } else {
                                 // If sign in fails, display a message to the user.

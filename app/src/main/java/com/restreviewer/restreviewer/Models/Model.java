@@ -66,12 +66,20 @@ public class Model {
         void done(List<Comment> stList);
     }
 
+    public interface GetFavoritesListener {
+        void done(List<Favorite> stList);
+    }
+
     public void addRestaurant(Restaurant newRest, AddRestaurantListener listener) {
         remote.addRestaurant(newRest, listener);
     }
 
     public void getComments(String restaurantId, GetCommentsListener listener) {
         remote.getComments(restaurantId, listener);
+    }
+
+    public void getFavorites(String UID, GetFavoritesListener listener) {
+        remote.getFavorites(UID, listener);
     }
 
     public void getRestaurants(final GetRestaurantsListener listener) {
@@ -102,6 +110,11 @@ public class Model {
     public void addComment(Comment comment, AddCommentListener listener) {
         remote.addComment(comment, listener);
     }
+
+    public void addFavorite(Favorite favorite, AddCommentListener listener) {
+        remote.addFavorite(favorite, listener);
+    }
+
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public void loadImages(final List<Restaurant> restaurants, final LoadImageListener listener) {
