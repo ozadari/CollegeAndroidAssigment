@@ -5,8 +5,6 @@ import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Environment;
-import android.provider.MediaStore;
-import android.support.annotation.NonNull;
 import android.support.annotation.RequiresApi;
 import android.util.Log;
 
@@ -22,10 +20,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
 /**
  * Created by paz on 07/02/2018.
@@ -73,6 +68,10 @@ public class Model {
         void done(String key);
     }
 
+    public interface RemoveFavoritesListener {
+        void done();
+    }
+
     public void addRestaurant(Restaurant newRest, AddRestaurantListener listener) {
         remote.addRestaurant(newRest, listener);
     }
@@ -118,6 +117,9 @@ public class Model {
         remote.addFavorite(favorite, listener);
     }
 
+    public void removeFavorite(Favorite favorite, RemoveFavoritesListener listener) {
+        remote.removeFavorite(favorite, listener);
+    }
 
     @RequiresApi(api = Build.VERSION_CODES.FROYO)
     public void loadImages(final List<Restaurant> restaurants, final LoadImageListener listener) {

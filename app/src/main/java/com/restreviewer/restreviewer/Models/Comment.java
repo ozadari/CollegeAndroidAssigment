@@ -1,8 +1,5 @@
 package com.restreviewer.restreviewer.Models;
 
-import android.graphics.Bitmap;
-import android.net.Uri;
-
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;

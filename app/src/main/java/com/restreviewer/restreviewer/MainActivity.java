@@ -3,12 +3,11 @@ package com.restreviewer.restreviewer;
 import android.app.ProgressDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v4.app.ActivityCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,7 +23,6 @@ import com.restreviewer.restreviewer.Models.Model;
 import com.restreviewer.restreviewer.Models.Restaurant;
 import com.squareup.picasso.Picasso;
 
-import java.util.Arrays;
 import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
@@ -124,10 +122,17 @@ public class MainActivity extends AppCompatActivity {
             convertView.setTag(position);
 
             final Restaurant currRest = restaurants.get(position);
+
             name.setText(currRest.getName());
             type.setText(currRest.getType());
             phone.setText(currRest.getPhone());
             Picasso.with(MyApplication.getContext()).load(currRest.getImageUri()).resize(300,200).into(image);
+            if (isRestaurantFavorite(currRest.getId())){
+                favBtn.setImageResource(R.drawable.staron);
+            } else {
+                favBtn.setImageResource(R.drawable.staroff);
+            }
+
             Button btnWatch = (Button) convertView.findViewById(R.id.btnWatchRest);
             btnWatch.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -143,7 +148,13 @@ public class MainActivity extends AppCompatActivity {
                 @Override
                 public void onClick(View view) {
                     if (isRestaurantFavorite(currRest.getId())) {
-                        // todo: remove
+                        Favorite fav = new Favorite(userId, currRest.getId());
+                        Model.instance().removeFavorite(fav, new Model.RemoveFavoritesListener() {
+                            @Override
+                            public void done() {
+                                favBtn.setImageResource(R.drawable.staroff);
+                            }
+                        });
                     } else {
                         Favorite fav = new Favorite(userId, currRest.getId());
                         Model.instance().addFavorite(fav, new Model.AddFavoritesListener() {

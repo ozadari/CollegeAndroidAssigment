@@ -2,10 +2,8 @@ package com.restreviewer.restreviewer.Models;
 
 import android.graphics.Bitmap;
 import android.net.Uri;
-import android.support.annotation.IntegerRes;
 
 import java.io.Serializable;
-import java.util.List;
 
 /**
  * Created by paz on 25/11/2017.

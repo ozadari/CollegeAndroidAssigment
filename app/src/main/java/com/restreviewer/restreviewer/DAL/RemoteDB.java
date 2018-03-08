@@ -1,19 +1,5 @@
 package com.restreviewer.restreviewer.DAL;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
-import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
-import com.google.firebase.database.Query;
-import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
-import com.google.firebase.storage.FirebaseStorage;
-import com.google.firebase.storage.StorageReference;
-import com.google.firebase.storage.UploadTask;
-import com.restreviewer.restreviewer.Models.Comment;
-import com.restreviewer.restreviewer.Models.Favorite;
-import com.restreviewer.restreviewer.Models.Model;
-import com.restreviewer.restreviewer.Models.Restaurant;
+
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -22,7 +8,21 @@ import android.support.annotation.NonNull;
 import android.util.Log;
 
 import com.firebase.client.Firebase;
-import com.firebase.client.FirebaseError;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.Query;
+import com.google.firebase.database.ValueEventListener;
+import com.google.firebase.storage.FirebaseStorage;
+import com.google.firebase.storage.StorageReference;
+import com.google.firebase.storage.UploadTask;
+import com.restreviewer.restreviewer.Models.Comment;
+import com.restreviewer.restreviewer.Models.Favorite;
+import com.restreviewer.restreviewer.Models.Model;
+import com.restreviewer.restreviewer.Models.Restaurant;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
@@ -154,6 +154,12 @@ public class RemoteDB {
         final DatabaseReference newFavoriteRef = favoritesReference.push();
         newFavoriteRef.setValue(favorite);
         listener.done(newFavoriteRef.getKey());
+    }
+
+    public void removeFavorite(Favorite favorite, final Model.RemoveFavoritesListener listener) {
+        final DatabaseReference newFavoriteRef = favoritesReference.child(favorite.getId());
+        newFavoriteRef.removeValue();
+        listener.done();
     }
 
     public void loadImageByBytes(final Restaurant restaurant, final OnSuccessListener<Bitmap> listener){
