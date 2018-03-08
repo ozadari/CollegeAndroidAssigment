@@ -25,7 +25,7 @@ public class LocalRestaurants {
 
     static public void create(SQLiteDatabase db) {
         db.execSQL("create table " + RESTAURANT_TABLE + " (" +
-                RESTAURANT_TABLE_ID + " INTEGER PRIMARY KEY," +
+                RESTAURANT_TABLE_ID + " TEXT PRIMARY KEY," +
                 RESTAURANT_TABLE_NAME + " TEXT," +
                 RESTAURANT_TABLE_ADDRESS + " TEXT," +
                 RESTAURANT_TABLE_TYPE + " TEXT," +
@@ -56,7 +56,7 @@ public class LocalRestaurants {
             int kosherIndex = cursor.getColumnIndex(RESTAURANT_TABLE_KOSHER);
             int phoneIndex = cursor.getColumnIndex(RESTAURANT_TABLE_PHONE);
             do {
-                Integer id = cursor.getInt(idIndex);
+                String id = cursor.getString(idIndex);
                 String name = cursor.getString(nameIndex);
                 String address = cursor.getString(addressIndex);
                 String type = cursor.getString(typeIndex);

@@ -84,16 +84,19 @@ public class AddRestaurantActivity extends AppCompatActivity {
                 newRest.setPhone(restPhone.getText().toString());
                 newRest.setDeliveries(Deliveries.isChecked());
                 newRest.setKosher(Kosher.isChecked());
+                newRest.setImageUri(imageUri);
+                //newRest.setImage(imageBitmap);
 
                 Model.instance().addRestaurant(newRest, new Model.AddRestaurantListener(){
                     @Override
                     public void done(String key) {
+                        newRest.setId(key);
                         System.out.println("restaurant successfully saved");
-                        Model.instance().saveImage(key,imageUri, new OnSuccessListener<String>(){
+                        Model.instance().saveImage(key,imageBitmap, new OnSuccessListener<String>(){
                             @Override
                             public void onSuccess(String message) {
                                 Toast.makeText(
-                                        MyApplication.getContext(), "Comment saved! " + message, Toast.LENGTH_SHORT).show();
+                                        MyApplication.getContext(), "Restaurant saved! " + message, Toast.LENGTH_SHORT).show();
                                 Intent intent = new Intent(getBaseContext(), RestaurantActivity.class);
                                 intent.putExtra("Restaurant", newRest);
                                 startActivity(intent);

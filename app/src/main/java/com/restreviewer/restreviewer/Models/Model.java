@@ -64,7 +64,7 @@ public class Model {
         remote.addRestaurant(newRest, listener);
     }
 
-    public void getComments(Integer restaurantId, GetCommentsListener listener) {
+    public void getComments(String restaurantId, GetCommentsListener listener) {
         remote.getComments(restaurantId, listener);
     }
 
@@ -131,8 +131,8 @@ public class Model {
         }
     }
 
-    public void saveImage(final String imageName, final Uri imageBitmap, final OnSuccessListener listener) {
-//        saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
+    public void saveImage(final String imageName, final Bitmap imageBitmap, final OnSuccessListener listener) {
+        saveImageToFile(imageBitmap,imageName + ".jpg"); // synchronously save image locally
         remote.uploadImage(imageName, imageBitmap, listener);
     }
 

@@ -17,12 +17,12 @@ public class Comment {
     private String Content;
     private Float Rate;
     private String Date;
-    private Integer Restaurant_Id;
+    private String Restaurant_Id;
 
     public Comment() {
     }
 
-    public Comment(String title, String content, Float rate, Integer restaurantId) {
+    public Comment(String title, String content, Float rate, String restaurantId) {
         this.Title= title;
         this.Content = content;
         this.Rate = rate;
@@ -73,11 +73,11 @@ public class Comment {
         this.Rate = rate;
     }
 
-    public Integer getRestaurantId() {
+    public String getRestaurantId() {
         return Restaurant_Id;
     }
 
-    public void setRestaurantId(Integer restaurantId) {
+    public void setRestaurantId(String restaurantId) {
         this.Restaurant_Id = restaurantId;
     }
 }

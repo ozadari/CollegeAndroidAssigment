@@ -52,7 +52,7 @@ public class RestaurantActivity extends AppCompatActivity {
 
         // Comments fragment
         Bundle bundle = new Bundle();
-        bundle.putString("restaurantId", restaurant.getId().toString());
+        bundle.putString("restaurantId", restaurant.getId());
         fragmentTransaction.replace(R.id.comments_frag_container, fragment);
         fragment.setArguments(bundle);
         fragmentTransaction.commit();

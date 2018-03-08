@@ -12,7 +12,7 @@ import java.util.List;
  */
 
 public class Restaurant implements Serializable {
-    private Integer Id;
+    private String Id;
     private String Name;
     private String Address;
     private String FoodType;
@@ -26,7 +26,7 @@ public class Restaurant implements Serializable {
     public Restaurant() {
     }
 
-    public Restaurant(Integer id, String name, String address, String type, Boolean kosher, String phone,
+    public Restaurant(String id, String name, String address, String type, Boolean kosher, String phone,
                       Boolean deliveries){
         this.Id = id;
         this.Name = name;
@@ -38,11 +38,11 @@ public class Restaurant implements Serializable {
     }
 
 
-    public Integer getId() {
+    public String getId() {
         return Id;
     }
 
-    public void setId(Integer id) {
+    public void setId(String id) {
         this.Id = id;
     }
 

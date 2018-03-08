@@ -40,7 +40,7 @@ public class CommentsListFragment extends ListFragment {
 
         // Inflate the layout for this fragment
         String restaurantId = this.getArguments().getString("restaurantId");
-        Model.instance().getComments(Integer.parseInt(restaurantId), new Model.GetCommentsListener() {
+        Model.instance().getComments(restaurantId, new Model.GetCommentsListener() {
             @Override
             public void done(final List<Comment> commentsRes) {
                 comments = commentsRes;
